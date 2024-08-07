@@ -1,21 +1,17 @@
+import pandas as pd
 def withdraw_money():
-    import pandas as pd
-    details=pd.read_csv(r"C:\Users\navee\Desktop\banking\bankdata.csv")
-    account_no=int(input("enter your account no: "))
-    re_enter_account_no=int(input("confirm your account no: "))
-    if (account_no==re_enter_account_no and re_enter_account_no in list(details['account'])):
-        for i in details.index:
-            if(details['account'][i]==re_enter_account_no):
-                Current_balance=(details['balance'][i])
-                print("Your current balance is:",Current_balance)
-        Amount=int(input("enter amount to withdrawl: "))
-        if(Amount<=Current_balance):
-            for i in details.index:
-                if(details['account'][i]==re_enter_account_no):
-                   print("Your update balance is:", details['balance'][i]-Amount)
+    data=pd.read_csv('bankdata.csv')
+    acdata=list(data['account'])
+    account=int(input("Enter your account"))
+    if(account in acdata):
+        ind=acdata.index(account)
+        amount=int(input("Enter the amount"))
+        if(amount<data['balance'][ind]):
+            data['balance'][ind]=data['balance'][ind]-amount
+            data.to_csv('bankdata.csv',index=False)
+            print("Money withdrawl successfully")
+            print('Current balance',data['balance'][ind])
         else:
-            print("you have less bank balance")
+            print("Insufficient fund")
     else:
-        print("account number not matched")
-    
-    details=details.to_csv(r"C:\Users\navee\Desktop\banking\bankdata.csv")
+        print("Account doesnot exist")
